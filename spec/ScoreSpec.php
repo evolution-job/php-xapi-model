@@ -16,7 +16,7 @@ use Xabbuh\XApi\Model\Score;
 
 class ScoreSpec extends ObjectBehavior
 {
-    function its_properties_can_be_read()
+    public function its_properties_can_be_read(): void
     {
         $this->beConstructedWith(1, 100, 0, 100);
 
@@ -26,7 +26,7 @@ class ScoreSpec extends ObjectBehavior
         $this->getMax()->shouldReturn(100);
     }
 
-    function it_can_be_constructed_with_a_scaled_value_only()
+    public function it_can_be_constructed_with_a_scaled_value_only(): void
     {
         $this->beConstructedWith(1);
 
@@ -36,7 +36,7 @@ class ScoreSpec extends ObjectBehavior
         $this->getMax()->shouldReturn(null);
     }
 
-    function it_can_be_constructed_with_a_raw_value_only()
+    public function it_can_be_constructed_with_a_raw_value_only(): void
     {
         $this->beConstructedWith(null, 100);
 
@@ -46,7 +46,7 @@ class ScoreSpec extends ObjectBehavior
         $this->getMax()->shouldReturn(null);
     }
 
-    function it_can_be_constructed_with_a_min_value_only()
+    public function it_can_be_constructed_with_a_min_value_only(): void
     {
         $this->beConstructedWith(null, null, 0);
 
@@ -56,7 +56,7 @@ class ScoreSpec extends ObjectBehavior
         $this->getMax()->shouldReturn(null);
     }
 
-    function it_can_be_constructed_with_a_max_value_only()
+    public function it_can_be_constructed_with_a_max_value_only(): void
     {
         $this->beConstructedWith(null, null, null, 100);
 
@@ -66,51 +66,51 @@ class ScoreSpec extends ObjectBehavior
         $this->getMax()->shouldReturn(100);
     }
 
-    public function it_returns_a_new_instance_with_scaled()
+    public function it_returns_a_new_instance_with_scaled(): void
     {
         $score = $this->withScaled(1);
 
         $this->getScaled()->shouldBeNull();
 
         $score->shouldNotBe($this);
-        $score->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Score');
+        $score->shouldBeAnInstanceOf(Score::class);
         $score->getScaled()->shouldReturn(1);
     }
 
-    public function it_returns_a_new_instance_with_raw()
+    public function it_returns_a_new_instance_with_raw(): void
     {
         $score = $this->withRaw(100);
 
         $this->getRaw()->shouldBeNull();
 
         $score->shouldNotBe($this);
-        $score->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Score');
+        $score->shouldBeAnInstanceOf(Score::class);
         $score->getRaw()->shouldReturn(100);
     }
 
-    public function it_returns_a_new_instance_with_min()
+    public function it_returns_a_new_instance_with_min(): void
     {
         $score = $this->withMin(0);
 
         $this->getMin()->shouldBeNull();
 
         $score->shouldNotBe($this);
-        $score->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Score');
+        $score->shouldBeAnInstanceOf(Score::class);
         $score->getMin()->shouldReturn(0);
     }
 
-    public function it_returns_a_new_instance_with_max()
+    public function it_returns_a_new_instance_with_max(): void
     {
         $score = $this->withMax(100);
 
         $this->getMax()->shouldBeNull();
 
         $score->shouldNotBe($this);
-        $score->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Score');
+        $score->shouldBeAnInstanceOf(Score::class);
         $score->getMax()->shouldReturn(100);
     }
 
-    function it_treats_integers_as_floats_when_comparing()
+    public function it_treats_integers_as_floats_when_comparing(): void
     {
         $this->beConstructedWith(1, 100, 0, 100);
 

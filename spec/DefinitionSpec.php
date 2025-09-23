@@ -12,6 +12,7 @@
 namespace spec\Xabbuh\XApi\Model;
 
 use PhpSpec\ObjectBehavior;
+use SplObjectStorage;
 use Xabbuh\XApi\Model\Definition;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
@@ -20,10 +21,10 @@ use Xabbuh\XApi\Model\LanguageMap;
 
 class DefinitionSpec extends ObjectBehavior
 {
-    function its_properties_can_be_read()
+    public function its_properties_can_be_read(): void
     {
-        $name = LanguageMap::create(array('en-US' => 'test'));
-        $description = LanguageMap::create(array('en-US' => 'test'));
+        $name = LanguageMap::create(['en-US' => 'test']);
+        $description = LanguageMap::create(['en-US' => 'test']);
         $this->beConstructedWith(
             $name,
             $description,
@@ -37,7 +38,7 @@ class DefinitionSpec extends ObjectBehavior
         $this->getMoreInfo()->equals(IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'))->shouldReturn(true);
     }
 
-    function it_can_be_empty()
+    public function it_can_be_empty(): void
     {
         $this->getName()->shouldReturn(null);
         $this->getDescription()->shouldReturn(null);
@@ -47,7 +48,7 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($this->createEmptyDefinition())->shouldReturn(true);
     }
 
-    public function it_returns_a_new_instance_with_name()
+    public function it_returns_a_new_instance_with_name(): void
     {
         $name = new LanguageMap();
         $definition = $this->withName($name);
@@ -59,7 +60,7 @@ class DefinitionSpec extends ObjectBehavior
         $definition->getName()->shouldReturn($name);
     }
 
-    public function it_returns_a_new_instance_with_description()
+    public function it_returns_a_new_instance_with_description(): void
     {
         $description = new LanguageMap();
         $definition = $this->withDescription($description);
@@ -71,7 +72,7 @@ class DefinitionSpec extends ObjectBehavior
         $definition->getDescription()->shouldReturn($description);
     }
 
-    public function it_returns_a_new_instance_with_type()
+    public function it_returns_a_new_instance_with_type(): void
     {
         $definition = $this->withType(IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'));
 
@@ -82,7 +83,7 @@ class DefinitionSpec extends ObjectBehavior
         $definition->getType()->equals(IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'))->shouldReturn(true);
     }
 
-    public function it_returns_a_new_instance_with_more_info()
+    public function it_returns_a_new_instance_with_more_info(): void
     {
         $definition = $this->withMoreInfo(IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'));
 
@@ -93,9 +94,9 @@ class DefinitionSpec extends ObjectBehavior
         $definition->getMoreInfo()->equals(IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'))->shouldReturn(true);
     }
 
-    public function it_returns_a_new_instance_with_extensions()
+    public function it_returns_a_new_instance_with_extensions(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $extensions = new Extensions($extensions);
         $definition = $this->withExtensions($extensions);
@@ -107,24 +108,24 @@ class DefinitionSpec extends ObjectBehavior
         $definition->getExtensions()->shouldReturn($extensions);
     }
 
-    function it_is_different_when_names_are_omitted_and_other_definition_contains_an_empty_list_of_names()
+    public function it_is_different_when_names_are_omitted_and_other_definition_contains_an_empty_list_of_names(): void
     {
         $this->equals(new Definition(new LanguageMap()))->shouldReturn(false);
     }
 
-    function it_is_different_when_descriptions_are_omitted_and_other_definition_contains_an_empty_list_of_descriptions()
+    public function it_is_different_when_descriptions_are_omitted_and_other_definition_contains_an_empty_list_of_descriptions(): void
     {
         $this->equals(new Definition(null, new LanguageMap()))->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_only_this_definition_has_a_type()
+    public function it_is_not_equal_to_other_definition_if_only_this_definition_has_a_type(): void
     {
         $this->beConstructedWith(null, null, IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'));
 
         $this->equals($this->createEmptyDefinition())->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_only_the_other_definition_has_a_type()
+    public function it_is_not_equal_to_other_definition_if_only_the_other_definition_has_a_type(): void
     {
         $this->beConstructedWith();
 
@@ -134,7 +135,7 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_types_are_not_equal()
+    public function it_is_not_equal_to_other_definition_if_types_are_not_equal(): void
     {
         $this->beConstructedWith(null, null, IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'));
 
@@ -144,14 +145,14 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_only_this_definition_has_more_info()
+    public function it_is_not_equal_to_other_definition_if_only_this_definition_has_more_info(): void
     {
         $this->beConstructedWith(null, null, null, IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'));
 
         $this->equals($this->createEmptyDefinition())->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_only_the_other_definition_has_more_info()
+    public function it_is_not_equal_to_other_definition_if_only_the_other_definition_has_more_info(): void
     {
         $this->beConstructedWith();
 
@@ -161,7 +162,7 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_more_infos_are_not_equal()
+    public function it_is_not_equal_to_other_definition_if_more_infos_are_not_equal(): void
     {
         $this->beConstructedWith(null, null, null, IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'));
 
@@ -171,20 +172,20 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_only_this_definition_has_extensions()
+    public function it_is_not_equal_to_other_definition_if_only_this_definition_has_extensions(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this->beConstructedWith(null, null, null, null, new Extensions($extensions));
 
         $this->equals($this->createEmptyDefinition())->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_only_the_other_definition_has_extensions()
+    public function it_is_not_equal_to_other_definition_if_only_the_other_definition_has_extensions(): void
     {
         $this->beConstructedWith();
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $definition = $this->createEmptyDefinition();
         $definition = $definition->withExtensions(new Extensions($extensions));
@@ -192,13 +193,13 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_definition_if_extensions_are_not_equal()
+    public function it_is_not_equal_to_other_definition_if_extensions_are_not_equal(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/subject'), 'Conformance Testing');
         $this->beConstructedWith(null, null, null, null, new Extensions($extensions));
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $definition = $this->createEmptyDefinition();
         $definition = $definition->withExtensions(new Extensions($extensions));
@@ -206,23 +207,23 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(false);
     }
 
-    function it_is_equal_to_other_definition_if_properties_are_equal()
+    public function it_is_equal_to_other_definition_if_properties_are_equal(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this->beConstructedWith(
-            LanguageMap::create(array('en-US' => 'test')),
-            LanguageMap::create(array('en-US' => 'test')),
+            LanguageMap::create(['en-US' => 'test']),
+            LanguageMap::create(['en-US' => 'test']),
             IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'),
             IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'),
             new Extensions($extensions)
         );
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $definition = $this->createEmptyDefinition();
-        $definition = $definition->withName(LanguageMap::create(array('en-US' => 'test')));
-        $definition = $definition->withDescription(LanguageMap::create(array('en-US' => 'test')));
+        $definition = $definition->withName(LanguageMap::create(['en-US' => 'test']));
+        $definition = $definition->withDescription(LanguageMap::create(['en-US' => 'test']));
         $definition = $definition->withType(IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'));
         $definition = $definition->withMoreInfo(IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'));
         $definition = $definition->withExtensions(new Extensions($extensions));
@@ -230,7 +231,7 @@ class DefinitionSpec extends ObjectBehavior
         $this->equals($definition)->shouldReturn(true);
     }
 
-    protected function createEmptyDefinition()
+    protected function createEmptyDefinition(): Definition
     {
         return new Definition();
     }

@@ -11,23 +11,23 @@
 
 namespace spec\Xabbuh\XApi\Model;
 
+use DateTime;
+use DateTimeInterface;
 use PhpSpec\ObjectBehavior;
 use Xabbuh\XApi\Model\Activity;
 use Xabbuh\XApi\Model\Agent;
 use Xabbuh\XApi\Model\InverseFunctionalIdentifier;
 use Xabbuh\XApi\Model\IRI;
-use Xabbuh\XApi\Model\LanguageMap;
-use Xabbuh\XApi\Model\Verb;
 
 class StateDocumentsFilterSpec extends ObjectBehavior
 {
-    function it_does_not_filter_anything_by_default()
+    public function it_does_not_filter_anything_by_default(): void
     {
         $filter = $this->getFilter();
         $filter->shouldHaveCount(0);
     }
 
-    function it_can_filter_by_activity()
+    public function it_can_filter_by_activity(): void
     {
         $this->byActivity(new Activity(IRI::fromString('http://tincanapi.com/conformancetest/activityid')))->shouldReturn($this);
 
@@ -36,7 +36,7 @@ class StateDocumentsFilterSpec extends ObjectBehavior
         $filter->shouldHaveKeyWithValue('activity', 'http://tincanapi.com/conformancetest/activityid');
     }
 
-    function it_can_filter_by_agent()
+    public function it_can_filter_by_agent(): void
     {
         $actor = new Agent(InverseFunctionalIdentifier::withMbox(IRI::fromString('mailto:conformancetest@tincanapi.com')));
         $this->byAgent($actor)->shouldReturn($this);
@@ -46,7 +46,7 @@ class StateDocumentsFilterSpec extends ObjectBehavior
         $filter->shouldHaveKeyWithValue('agent', $actor);
     }
 
-    function it_can_filter_by_registration()
+    public function it_can_filter_by_registration(): void
     {
         $this->byRegistration('foo')->shouldReturn($this);
 
@@ -55,9 +55,9 @@ class StateDocumentsFilterSpec extends ObjectBehavior
         $filter->shouldHaveKeyWithValue('registration', 'foo');
     }
 
-    function it_can_filter_by_timestamp()
+    public function it_can_filter_by_timestamp(): void
     {
-        $this->since(\DateTime::createFromFormat(\DateTime::ISO8601, '2013-05-18T05:32:34Z'))->shouldReturn($this);
+        $this->since(DateTime::createFromFormat(DateTimeInterface::ATOM, '2013-05-18T05:32:34Z'))->shouldReturn($this);
         $this->getFilter()->shouldHaveKeyWithValue('since', '2013-05-18T05:32:34+00:00');
     }
 }

@@ -12,6 +12,7 @@
 namespace spec\Xabbuh\XApi\Model;
 
 use PhpSpec\ObjectBehavior;
+use SplObjectStorage;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
 use Xabbuh\XApi\Model\Result;
@@ -19,7 +20,7 @@ use Xabbuh\XApi\Model\Score;
 
 class ResultSpec extends ObjectBehavior
 {
-    function its_properties_can_be_read()
+    public function its_properties_can_be_read(): void
     {
         $score = new Score(1);
         $this->beConstructedWith($score, true, true, 'test', 'PT2H');
@@ -31,7 +32,7 @@ class ResultSpec extends ObjectBehavior
         $this->getDuration()->shouldReturn('PT2H');
     }
 
-    function it_can_be_empty()
+    public function it_can_be_empty(): void
     {
         $this->getScore()->shouldReturn(null);
         $this->getSuccess()->shouldReturn(null);
@@ -42,36 +43,36 @@ class ResultSpec extends ObjectBehavior
         $this->equals(new Result())->shouldReturn(true);
     }
 
-    function it_is_empty_and_is_not_equal_to_a_result_with_a_score()
+    public function it_is_empty_and_is_not_equal_to_a_result_with_a_score(): void
     {
         $this->equals(new Result(new Score(1)))->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_result_if_not_both_results_have_extensions()
+    public function it_is_not_equal_to_other_result_if_not_both_results_have_extensions(): void
     {
         $this->beConstructedWith(new Score(1), true, true, 'test', 'PT2H');
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this
             ->equals(new Result(new Score(1), true, true, 'test', 'PT2H', new Extensions($extensions)))
             ->shouldReturn(false);
     }
 
-    function it_is_not_equal_to_other_result_if_extensions_are_not_equal()
+    public function it_is_not_equal_to_other_result_if_extensions_are_not_equal(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this->beConstructedWith(new Score(1), true, true, 'test', 'PT2H', new Extensions($extensions));
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/subject'), 'Conformance Testing');
         $this
             ->equals(new Result(new Score(1), true, true, 'test', 'PT2H', new Extensions($extensions)))
             ->shouldReturn(false);
     }
 
-    public function it_returns_a_new_instance_with_score()
+    public function it_returns_a_new_instance_with_score(): void
     {
         $score = new Score(1);
         $result = $this->withScore($score);
@@ -79,11 +80,11 @@ class ResultSpec extends ObjectBehavior
         $this->getScore()->shouldBeNull();
 
         $result->shouldNotBe($this);
-        $result->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Result');
+        $result->shouldBeAnInstanceOf(Result::class);
         $result->getScore()->shouldReturn($score);
     }
 
-    public function it_returns_a_new_instance_with_success()
+    public function it_returns_a_new_instance_with_success(): void
     {
         $this->beConstructedWith(null, false);
         $result = $this->withSuccess(true);
@@ -91,11 +92,11 @@ class ResultSpec extends ObjectBehavior
         $this->getSuccess()->shouldReturn(false);
 
         $result->shouldNotBe($this);
-        $result->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Result');
+        $result->shouldBeAnInstanceOf(Result::class);
         $result->getSuccess()->shouldReturn(true);
     }
 
-    public function it_returns_a_new_instance_with_completion()
+    public function it_returns_a_new_instance_with_completion(): void
     {
         $this->beConstructedWith(null, null, false);
         $result = $this->withCompletion(true);
@@ -103,33 +104,33 @@ class ResultSpec extends ObjectBehavior
         $this->getCompletion()->shouldReturn(false);
 
         $result->shouldNotBe($this);
-        $result->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Result');
+        $result->shouldBeAnInstanceOf(Result::class);
         $result->getCompletion()->shouldReturn(true);
     }
 
-    public function it_returns_a_new_instance_with_response()
+    public function it_returns_a_new_instance_with_response(): void
     {
         $result = $this->withResponse('test');
 
         $this->getResponse()->shouldReturn(null);
 
         $result->shouldNotBe($this);
-        $result->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Result');
+        $result->shouldBeAnInstanceOf(Result::class);
         $result->getResponse()->shouldReturn('test');
     }
 
-    public function it_returns_a_new_instance_with_duration()
+    public function it_returns_a_new_instance_with_duration(): void
     {
         $result = $this->withDuration('PT2H');
 
         $this->getDuration()->shouldReturn(null);
 
         $result->shouldNotBe($this);
-        $result->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Result');
+        $result->shouldBeAnInstanceOf(Result::class);
         $result->getDuration()->shouldReturn('PT2H');
     }
 
-    public function it_returns_a_new_instance_with_extensions()
+    public function it_returns_a_new_instance_with_extensions(): void
     {
         $extensions = new Extensions();
         $result = $this->withExtensions($extensions);
@@ -137,7 +138,7 @@ class ResultSpec extends ObjectBehavior
         $this->getScore()->shouldBeNull();
 
         $result->shouldNotBe($this);
-        $result->shouldBeAnInstanceOf('\Xabbuh\XApi\Model\Result');
+        $result->shouldBeAnInstanceOf(Result::class);
         $result->getExtensions()->shouldReturn($extensions);
     }
 }

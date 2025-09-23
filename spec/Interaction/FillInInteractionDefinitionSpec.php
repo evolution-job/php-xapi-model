@@ -12,10 +12,11 @@
 namespace spec\Xabbuh\XApi\Model\Interaction;
 
 use Xabbuh\XApi\Model\Interaction\FillInInteractionDefinition;
+use Xabbuh\XApi\Model\Interaction\InteractionDefinition;
 
 class FillInInteractionDefinitionSpec extends InteractionDefinitionSpec
 {
-    protected function createEmptyDefinition()
+    protected function createEmptyDefinition(): InteractionDefinition
     {
         return new FillInInteractionDefinition();
     }

@@ -2,113 +2,110 @@
 
 namespace spec\Xabbuh\XApi\Model;
 
+use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
+use SplObjectStorage;
+use Xabbuh\XApi\Common\Exception\UnsupportedOperationException;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
 use Xabbuh\XApi\Model\IRL;
 
 class ExtensionsSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this->beConstructedWith($extensions);
     }
 
-    function its_extensions_can_be_read()
+    public function its_extensions_can_be_read(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
-        $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/color'), array(
-            'model' => 'RGB',
-            'value' => '#FFFFFF',
-        ));
+        $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/color'), ['model' => 'RGB', 'value' => '#FFFFFF']);
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/starting-position'), 1);
         $this->beConstructedWith($extensions);
 
+        $this->shouldHaveKey(IRI::fromString('http://id.tincanapi.com/extension/topic'));
         $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/topic'))->shouldReturn('Conformance Testing');
 
+        $this->shouldHaveKey(IRI::fromString('http://id.tincanapi.com/extension/color'));
         $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/color'))->shouldReturn(array(
             'model' => 'RGB',
             'value' => '#FFFFFF',
         ));
 
+        $this->shouldHaveKey(IRI::fromString('http://id.tincanapi.com/extension/starting-position'));
         $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/starting-position'))->shouldReturn(1);
 
         $returnedExtensions = $this->getExtensions();
-        $returnedExtensions->shouldBeAnInstanceOf('\SplObjectStorage');
+        $returnedExtensions->shouldBeAnInstanceOf(SplObjectStorage::class);
         $returnedExtensions->count()->shouldReturn(3);
     }
 
-    function it_throws_exception_when_keys_are_passed_that_are_not_iri_instances_during_instantiation()
+    public function it_throws_exception_when_keys_are_passed_that_are_not_iri_instances_during_instantiation(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRL::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this->beConstructedWith($extensions);
-        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+        $this->shouldThrow(InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_throws_exception_when_keys_are_passed_that_are_not_iri_instances()
+    public function it_throws_exception_when_keys_are_passed_that_are_not_iri_instances(): void
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('offsetGet', array('http://id.tincanapi.com/extension/topic'));
+        $this->shouldThrow(InvalidArgumentException::class)->during('offsetGet', array('http://id.tincanapi.com/extension/topic'));
     }
 
-    function it_throws_exception_when_not_existing_extension_is_being_read()
+    public function it_throws_exception_when_not_existing_extension_is_being_read(): void
     {
-        $this->shouldThrow('\InvalidArgumentException')->duringOffsetGet(IRI::fromString('z'));
+        $this->shouldThrow(InvalidArgumentException::class)->duringOffsetGet(IRI::fromString('z'));
     }
 
-    function its_extensions_cannot_be_manipulated()
+    public function its_extensions_cannot_be_manipulated(): void
     {
-        $this->shouldThrow('\Xabbuh\XApi\Common\Exception\UnsupportedOperationException')->duringOffsetSet(IRI::fromString('z'), 'baz');
-        $this->shouldThrow('\Xabbuh\XApi\Common\Exception\UnsupportedOperationException')->duringOffsetUnset(IRI::fromString('x'));
+        $this->shouldThrow(UnsupportedOperationException::class)->duringOffsetSet(IRI::fromString('z'), 'baz');
+        $this->shouldThrow(UnsupportedOperationException::class)->duringOffsetUnset(IRI::fromString('x'));
     }
 
-    function its_not_equal_to_other_extensions_with_a_different_number_of_entries()
+    public function its_not_equal_to_other_extensions_with_a_different_number_of_entries(): void
     {
         $this->equals(new Extensions())->shouldReturn(false);
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/starting-position'), 1);
         $this->equals(new Extensions($extensions))->shouldReturn(false);
     }
 
-    function its_not_equal_to_other_extensions_if_extension_keys_differ()
+    public function its_not_equal_to_other_extensions_if_extension_keys_differ(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/subject'), 'Conformance Testing');
 
         $this->equals(new Extensions($extensions))->shouldReturn(false);
     }
 
-    function its_not_equal_to_other_extensions_if_extension_values_differ()
+    public function its_not_equal_to_other_extensions_if_extension_values_differ(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Tests');
 
         $this->equals(new Extensions($extensions))->shouldReturn(false);
     }
 
-    function its_equal_to_other_extensions_even_if_extension_names_are_in_different_order()
+    public function its_equal_to_other_extensions_even_if_extension_names_are_in_different_order(): void
     {
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
-        $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/color'), array(
-            'model' => 'RGB',
-            'value' => '#FFFFFF',
-        ));
+        $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/color'), ['model' => 'RGB', 'value' => '#FFFFFF']);
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/starting-position'), 1);
 
         $this->beConstructedWith($extensions);
 
-        $extensions = new \SplObjectStorage();
+        $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/starting-position'), 1);
-        $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/color'), array(
-            'model' => 'RGB',
-            'value' => '#FFFFFF',
-        ));
+        $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/color'), ['model' => 'RGB', 'value' => '#FFFFFF']);
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
 
         $this->equals(new Extensions($extensions))->shouldReturn(true);
