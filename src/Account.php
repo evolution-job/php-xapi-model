@@ -16,15 +16,10 @@ namespace Xabbuh\XApi\Model;
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
-final class Account
+final readonly class Account
 {
-    private $name;
-    private $homePage;
-
-    public function __construct(string $name, IRL $homePage)
+    public function __construct(private string $name, private IRL $homePage)
     {
-        $this->name = $name;
-        $this->homePage = $homePage;
     }
 
     /**

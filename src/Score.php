@@ -18,29 +18,14 @@ namespace Xabbuh\XApi\Model;
  */
 final class Score
 {
-    private $scaled;
-    private $raw;
-    private $min;
-    private $max;
+    public function __construct(
+        private int|null|float $scaled = null,
+        private int|null|float $raw = null,
+        private int|null|float $min = null,
+        private int|null|float $max = null,
+    ) {}
 
-    /**
-     * @param float|int|null $scaled
-     * @param float|int|null $raw
-     * @param float|int|null $min
-     * @param float|int|null $max
-     */
-    public function __construct($scaled = null, $raw = null, $min = null, $max = null)
-    {
-        $this->scaled = $scaled;
-        $this->raw = $raw;
-        $this->min = $min;
-        $this->max = $max;
-    }
-
-    /**
-     * @param float|int|null $scaled
-     */
-    public function withScaled($scaled): self
+    public function withScaled(float|int|null $scaled): self
     {
         $score = clone $this;
         $score->scaled = $scaled;
@@ -48,10 +33,7 @@ final class Score
         return $score;
     }
 
-    /**
-     * @param float|int|null $raw
-     */
-    public function withRaw($raw): self
+    public function withRaw(float|int|null $raw): self
     {
         $score = clone $this;
         $score->raw = $raw;
@@ -59,10 +41,7 @@ final class Score
         return $score;
     }
 
-    /**
-     * @param float|int|null $min
-     */
-    public function withMin($min): self
+    public function withMin(float|int|null $min): self
     {
         $score = clone $this;
         $score->min = $min;
@@ -70,10 +49,7 @@ final class Score
         return $score;
     }
 
-    /**
-     * @param float|int|null $max
-     */
-    public function withMax($max): self
+    public function withMax(float|int|null $max): self
     {
         $score = clone $this;
         $score->max = $max;
@@ -83,40 +59,32 @@ final class Score
 
     /**
      * Returns the Agent's scaled score (a number between -1 and 1).
-     *
-     * @return float|int|null The scaled score
      */
-    public function getScaled()
+    public function getScaled(): float|int|null
     {
         return $this->scaled;
     }
 
     /**
      * Returns the Agent's score (a number between min and max).
-     *
-     * @return float|int|null The score
      */
-    public function getRaw()
+    public function getRaw(): float|int|null
     {
         return $this->raw;
     }
 
     /**
      * Returns the lowest possible score.
-     *
-     * @return float|int|null The lowest possible score
      */
-    public function getMin()
+    public function getMin(): float|int|null
     {
         return $this->min;
     }
 
     /**
      * Returns the highest possible score.
-     *
-     * @return float|int|null The highest possible score
      */
-    public function getMax()
+    public function getMax(): float|int|null
     {
         return $this->max;
     }

@@ -18,13 +18,9 @@ namespace Xabbuh\XApi\Model;
  */
 final class AgentProfileDocument extends Document
 {
-    private $profile;
-
-    public function __construct(AgentProfile $profile, DocumentData $data)
+    public function __construct(private readonly AgentProfile $profile, DocumentData $data)
     {
         parent::__construct($data);
-
-        $this->profile = $profile;
     }
 
     public function getAgentProfile(): AgentProfile

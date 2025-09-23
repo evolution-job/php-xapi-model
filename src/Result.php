@@ -19,24 +19,11 @@ namespace Xabbuh\XApi\Model;
  */
 final class Result
 {
-    private $score;
-    private $success;
-    private $completion;
-    private $response;
-    private $duration;
-    private $extensions;
-
-    public function __construct(Score $score = null, bool $success = null, bool $completion = null, string $response = null, string $duration = null, Extensions $extensions = null)
+    public function __construct(private ?Score $score = null, private ?bool $success = null, private ?bool $completion = null, private ?string $response = null, private ?string $duration = null, private ?Extensions $extensions = null)
     {
-        $this->score = $score;
-        $this->success = $success;
-        $this->completion = $completion;
-        $this->response = $response;
-        $this->duration = $duration;
-        $this->extensions = $extensions;
     }
 
-    public function withScore(Score $score = null): self
+    public function withScore(?Score $score = null): self
     {
         $result = clone $this;
         $result->score = $score;
@@ -44,7 +31,7 @@ final class Result
         return $result;
     }
 
-    public function withSuccess(bool $success = null): self
+    public function withSuccess(?bool $success = null): self
     {
         $result = clone $this;
         $result->success = $success;
@@ -52,7 +39,7 @@ final class Result
         return $result;
     }
 
-    public function withCompletion(bool $completion = null): self
+    public function withCompletion(?bool $completion = null): self
     {
         $result = clone $this;
         $result->completion = $completion;
@@ -60,7 +47,7 @@ final class Result
         return $result;
     }
 
-    public function withResponse(string $response = null): self
+    public function withResponse(?string $response = null): self
     {
         $result = clone $this;
         $result->response = $response;
@@ -68,7 +55,7 @@ final class Result
         return $result;
     }
 
-    public function withDuration(string $duration = null): self
+    public function withDuration(?string $duration = null): self
     {
         $result = clone $this;
         $result->duration = $duration;
@@ -76,7 +63,7 @@ final class Result
         return $result;
     }
 
-    public function withExtensions(Extensions $extensions = null): self
+    public function withExtensions(?Extensions $extensions = null): self
     {
         $result = clone $this;
         $result->extensions = $extensions;
@@ -139,11 +126,11 @@ final class Result
      */
     public function equals(Result $result): bool
     {
-        if (null !== $this->score xor null !== $result->score) {
+        if ($this->score instanceof Score xor $result->score instanceof Score) {
             return false;
         }
 
-        if (null !== $this->score && !$this->score->equals($result->score)) {
+        if ($this->score instanceof Score && !$this->score->equals($result->score)) {
             return false;
         }
 
@@ -163,14 +150,10 @@ final class Result
             return false;
         }
 
-        if (null !== $this->extensions xor null !== $result->extensions) {
+        if ($this->extensions instanceof Extensions xor $result->extensions instanceof Extensions) {
             return false;
         }
 
-        if (null !== $this->extensions && null !== $result->extensions && !$this->extensions->equals($result->extensions)) {
-            return false;
-        }
-
-        return true;
+        return !($this->extensions instanceof Extensions && $result->extensions instanceof Extensions && !$this->extensions->equals($result->extensions));
     }
 }

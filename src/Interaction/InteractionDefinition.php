@@ -11,6 +11,7 @@
 
 namespace Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Definition;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
@@ -24,22 +25,18 @@ use Xabbuh\XApi\Model\LanguageMap;
  */
 class InteractionDefinition extends Definition
 {
-    private $correctResponsesPattern;
-
     /**
      * @param string[]|null $correctResponsesPattern
      */
-    public function __construct(LanguageMap $name = null, LanguageMap $description = null, IRI $type = null, IRL $moreInfo = null, Extensions $extensions = null, array $correctResponsesPattern = null)
+    public function __construct(?LanguageMap $name = null, ?LanguageMap $description = null, ?IRI $type = null, ?IRL $moreInfo = null, ?Extensions $extensions = null, private ?array $correctResponsesPattern = null)
     {
         parent::__construct($name, $description, $type, $moreInfo, $extensions);
-
-        $this->correctResponsesPattern = $correctResponsesPattern;
     }
 
     /**
      * @param string[]|null $correctResponsesPattern
      */
-    public function withCorrectResponsesPattern(array $correctResponsesPattern = null): self
+    public function withCorrectResponsesPattern(?array $correctResponsesPattern = null): self
     {
         $interaction = clone $this;
         $interaction->correctResponsesPattern = $correctResponsesPattern;
@@ -55,6 +52,7 @@ class InteractionDefinition extends Definition
         return $this->correctResponsesPattern;
     }
 
+    #[Override]
     public function equals(Definition $definition): bool
     {
         if (!parent::equals($definition)) {

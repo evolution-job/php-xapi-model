@@ -11,6 +11,8 @@
 
 namespace Xabbuh\XApi\Model;
 
+use Override;
+
 /**
  * A group of {@link Agent Agents} of a {@link Statement}.
  *
@@ -18,16 +20,12 @@ namespace Xabbuh\XApi\Model;
  */
 final class Group extends Actor
 {
-    private $members = [];
-
     /**
      * @param Agent[] $members
      */
-    public function __construct(InverseFunctionalIdentifier $iri = null, string $name = null, array $members = array())
+    public function __construct(?InverseFunctionalIdentifier $iri = null, ?string $name = null, private readonly array $members = [])
     {
         parent::__construct($iri, $name);
-
-        $this->members = $members;
     }
 
     /**
@@ -43,24 +41,19 @@ final class Group extends Actor
     /**
      * {@inheritdoc}
      */
-    public function equals(StatementObject $actor): bool
+    #[Override]
+    public function equals(StatementObject $statementObject): bool
     {
-        if (!parent::equals($actor)) {
+        if (!parent::equals($statementObject)) {
             return false;
         }
 
-        /** @var Group $actor */
+        /** @var Group $statementObject */
 
-        if (count($this->members) !== count($actor->members)) {
+        if (count($this->members) !== count($statementObject->members)) {
             return false;
         }
 
-        foreach ($this->members as $member) {
-            if (!in_array($member, $actor->members)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($this->members, static fn($member): bool => in_array($member, $statementObject->members));
     }
 }

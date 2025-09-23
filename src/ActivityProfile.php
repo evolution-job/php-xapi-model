@@ -18,13 +18,9 @@ namespace Xabbuh\XApi\Model;
  */
 final class ActivityProfile extends Profile
 {
-    private $activity;
-
-    public function __construct(string $profileId, Activity $activity)
+    public function __construct(string $profileId, private readonly Activity $activity)
     {
         parent::__construct($profileId);
-
-        $this->activity = $activity;
     }
 
     /**

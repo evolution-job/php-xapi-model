@@ -11,11 +11,12 @@
 
 namespace spec\Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use spec\Xabbuh\XApi\Model\DefinitionSpec;
 use Xabbuh\XApi\Model\Definition;
 use Xabbuh\XApi\Model\Interaction\InteractionDefinition;
 
-abstract class InteractionDefinitionSpec extends DefinitionSpec
+class InteractionDefinitionSpec extends DefinitionSpec
 {
     public function it_is_a_definition(): void
     {
@@ -75,5 +76,11 @@ abstract class InteractionDefinitionSpec extends DefinitionSpec
         $interaction = $interaction->withCorrectResponsesPattern(['test']);
 
         $this->equals($interaction)->shouldReturn(true);
+    }
+
+    #[Override]
+    protected function createEmptyDefinition(): InteractionDefinition
+    {
+        return new InteractionDefinition();
     }
 }

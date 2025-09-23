@@ -11,11 +11,13 @@
 
 namespace spec\Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Interaction\FillInInteractionDefinition;
 use Xabbuh\XApi\Model\Interaction\InteractionDefinition;
 
 class FillInInteractionDefinitionSpec extends InteractionDefinitionSpec
 {
+    #[Override]
     protected function createEmptyDefinition(): InteractionDefinition
     {
         return new FillInInteractionDefinition();

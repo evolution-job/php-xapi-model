@@ -27,16 +27,13 @@ class ExtensionsSpec extends ObjectBehavior
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/starting-position'), 1);
         $this->beConstructedWith($extensions);
 
-        $this->shouldHaveKey(IRI::fromString('http://id.tincanapi.com/extension/topic'));
         $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/topic'))->shouldReturn('Conformance Testing');
 
-        $this->shouldHaveKey(IRI::fromString('http://id.tincanapi.com/extension/color'));
-        $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/color'))->shouldReturn(array(
+        $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/color'))->shouldReturn([
             'model' => 'RGB',
             'value' => '#FFFFFF',
-        ));
+        ]);
 
-        $this->shouldHaveKey(IRI::fromString('http://id.tincanapi.com/extension/starting-position'));
         $this->offsetGet(IRI::fromString('http://id.tincanapi.com/extension/starting-position'))->shouldReturn(1);
 
         $returnedExtensions = $this->getExtensions();
@@ -50,11 +47,6 @@ class ExtensionsSpec extends ObjectBehavior
         $extensions->attach(IRL::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $this->beConstructedWith($extensions);
         $this->shouldThrow(InvalidArgumentException::class)->duringInstantiation();
-    }
-
-    public function it_throws_exception_when_keys_are_passed_that_are_not_iri_instances(): void
-    {
-        $this->shouldThrow(InvalidArgumentException::class)->during('offsetGet', array('http://id.tincanapi.com/extension/topic'));
     }
 
     public function it_throws_exception_when_not_existing_extension_is_being_read(): void

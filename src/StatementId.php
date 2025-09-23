@@ -11,6 +11,8 @@
 
 namespace Xabbuh\XApi\Model;
 
+use InvalidArgumentException;
+
 /**
  * An Experience API {@link https://github.com/adlnet/xAPI-Spec/blob/master/xAPI.md#statement Statement} identifier.
  *
@@ -18,7 +20,7 @@ namespace Xabbuh\XApi\Model;
  */
 final class StatementId
 {
-    private $uuid;
+    private ?Uuid $uuid = null;
 
     private function __construct()
     {
@@ -35,7 +37,7 @@ final class StatementId
     /**
      * Creates a statement id based on the given UUID string.
      *
-     * @throws \InvalidArgumentException when the given id is not a well-formed UUID
+     * @throws InvalidArgumentException when the given id is not a well-formed UUID
      */
     public static function fromString(string $id): self
     {

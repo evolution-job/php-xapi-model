@@ -17,18 +17,13 @@ namespace Xabbuh\XApi\Model;
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
-final class StatementResult
+final readonly class StatementResult
 {
-    private $statements;
-    private $moreUrlPath;
-
     /**
      * @param Statement[] $statements The collection of Statements
      */
-    public function __construct(array $statements, IRL $moreUrlPath = null)
+    public function __construct(private array $statements, private ?IRL $moreUrlPath = null)
     {
-        $this->statements = $statements;
-        $this->moreUrlPath = $moreUrlPath;
     }
 
     /**

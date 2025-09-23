@@ -11,6 +11,7 @@ use Xabbuh\XApi\Model\Exception\InvalidStateException;
 use Xabbuh\XApi\Model\InverseFunctionalIdentifier;
 use Xabbuh\XApi\Model\IRI;
 use Xabbuh\XApi\Model\Result;
+use Xabbuh\XApi\Model\Statement;
 use Xabbuh\XApi\Model\StatementId;
 use Xabbuh\XApi\Model\Verb;
 
@@ -22,7 +23,7 @@ class StatementFactorySpec extends ObjectBehavior
         $this->withVerb(new Verb(IRI::fromString('http://tincanapi.com/conformancetest/verbid')));
         $this->withObject(new Activity(IRI::fromString('http://tincanapi.com/conformancetest/activityid')));
 
-        $this->createStatement()->shouldBeAnInstanceOf('\Xabbuh\Xapi\Model\Statement');
+        $this->createStatement()->shouldBeAnInstanceOf(Statement::class);
     }
 
     public function it_configures_all_statement_properties(): void

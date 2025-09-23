@@ -23,14 +23,14 @@ use Xabbuh\XApi\Common\Exception\UnsupportedOperationException;
  */
 final class Extensions implements ArrayAccess
 {
-    private $extensions = [];
+    private array $extensions = [];
 
-    public function __construct(SplObjectStorage $extensions = null)
+    public function __construct(?SplObjectStorage $extensions = null)
     {
         if ($extensions instanceof SplObjectStorage) {
             foreach ($extensions as $extension) {
                 if (!$extension instanceof IRI) {
-                    throw new InvalidArgumentException(sprintf('Expected an IRI instance as key (got %s).', is_object($extension) ? get_class($extension) : gettype($extension)));
+                    throw new InvalidArgumentException(sprintf('Expected an IRI instance as key (got %s).', get_debug_type($extension)));
                 }
 
                 $this->extensions[$extension->getValue()] = $extensions[$extension];
@@ -44,7 +44,7 @@ final class Extensions implements ArrayAccess
     public function offsetExists($offset): bool
     {
         if (!$offset instanceof IRI) {
-            throw new InvalidArgumentException(sprintf('Expected an IRI instance as key (got %s).', is_object($offset) ? get_class($offset) : gettype($offset)));
+            throw new InvalidArgumentException(sprintf('Expected an IRI instance as key (got %s).', get_debug_type($offset)));
         }
 
         return isset($this->extensions[$offset->getValue()]);
@@ -53,17 +53,17 @@ final class Extensions implements ArrayAccess
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
-        if (!$offset instanceof IRI) {
-            throw new InvalidArgumentException(sprintf('Expected an IRI instance as key (got %s).', is_object($offset) ? get_class($offset) : gettype($offset)));
+        if ($offset instanceof IRI) {
+            $offset = $offset->getValue();
         }
 
-        if (!isset($this->extensions[$offset->getValue()])) {
-            throw new InvalidArgumentException(sprintf('No extension for key "%s" registered.', $offset->getValue()));
+        if (!isset($this->extensions[$offset])) {
+            throw new InvalidArgumentException(sprintf('No extension for key "%s" registered.', $offset));
         }
 
-        return $this->extensions[$offset->getValue()];
+        return $this->extensions[$offset];
     }
 
     /**

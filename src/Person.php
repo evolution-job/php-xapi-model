@@ -21,31 +21,29 @@ final class Person
     /**
      * @var string[] List of names of Agents
      */
-    private $names = [];
+    private array $names = [];
 
     /**
      * @var IRI[] List of mailto IRIs of Agents
      */
-    private $mboxes = [];
+    private array $mboxes = [];
 
     /**
      * @var string[] List of the SHA1 hashes of mailto IRIs of Agents
      */
-    private $mboxSha1Sums = [];
+    private array $mboxSha1Sums = [];
 
     /**
-     * @var string[] List of openids that uniquely identify the Agents
+     * @var string[] List of openid that uniquely identify the Agents
      */
-    private $openIds = [];
+    private array $openIds = [];
 
     /**
      * @var Account[] List of accounts of Agents
      */
-    private $accounts = [];
+    private array $accounts = [];
 
-    private function __construct()
-    {
-    }
+    private function __construct() { }
 
     /**
      * @param Agent[] $agents

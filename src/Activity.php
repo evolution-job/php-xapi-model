@@ -11,6 +11,8 @@
 
 namespace Xabbuh\XApi\Model;
 
+use Override;
+
 /**
  * An Activity in a {@link Statement}.
  *
@@ -18,13 +20,8 @@ namespace Xabbuh\XApi\Model;
  */
 final class Activity extends StatementObject
 {
-    private $id;
-    private $definition;
-
-    public function __construct(IRI $id, Definition $definition = null)
+    public function __construct(private readonly IRI $id, private readonly ?Definition $definition = null)
     {
-        $this->id = $id;
-        $this->definition = $definition;
     }
 
     /**
@@ -46,6 +43,7 @@ final class Activity extends StatementObject
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function equals(StatementObject $statementObject): bool
     {
         if (!$statementObject instanceof self) {
@@ -56,18 +54,14 @@ final class Activity extends StatementObject
             return false;
         }
 
-        if (null === $this->definition && null !== $statementObject->definition) {
+        if (!$this->definition instanceof Definition && $statementObject->definition instanceof Definition) {
             return false;
         }
 
-        if (null !== $this->definition && null === $statementObject->definition) {
+        if ($this->definition instanceof Definition && !$statementObject->definition instanceof Definition) {
             return false;
         }
 
-        if (null !== $this->definition && !$this->definition->equals($statementObject->definition)) {
-            return false;
-        }
-
-        return true;
+        return !($this->definition instanceof Definition && !$this->definition->equals($statementObject->definition));
     }
 }

@@ -12,28 +12,20 @@
 namespace Xabbuh\XApi\Model;
 
 use Ramsey\Uuid\Uuid as RamseyUuid;
-use Rhumsaa\Uuid\Uuid as RhumsaaUuid;
+use Ramsey\Uuid\UuidInterface;
+use Stringable;
 
 /**
  * @author Jérôme Parmentier <jerome.parmentier@acensi.fr>
  */
-final class Uuid
+final readonly class Uuid implements Stringable
 {
-    /**
-     * @var RamseyUuid|RhumsaaUuid;
-     */
-    private $uuid;
-
-    private function __construct($uuid)
+    private function __construct(private UuidInterface $uuid)
     {
-        $this->uuid = $uuid;
     }
 
     public static function fromString(string $uuid): self
     {
-        if (class_exists(RhumsaaUuid::class)) {
-            return new self(RhumsaaUuid::fromString($uuid));
-        }
 
         return new self(RamseyUuid::fromString($uuid));
     }
@@ -41,18 +33,14 @@ final class Uuid
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
      *
-     * @param int|string $node     a 48-bit number representing the hardware address
+     * @param int|string|null $node a 48-bit number representing the hardware address
      *                             This number may be represented as an integer or a hexadecimal string
-     * @param int        $clockSeq a 14-bit number used to help avoid duplicates that
+     * @param int|null $clockSeq a 14-bit number used to help avoid duplicates that
      *                             could arise when the clock is set backwards in time or if the node ID
      *                             changes
      */
-    public static function uuid1($node = null, int $clockSeq = null): self
+    public static function uuid1(int|string|null $node = null, ?int $clockSeq = null): self
     {
-        if (class_exists(RhumsaaUuid::class)) {
-            return new self(RhumsaaUuid::uuid1($node, $clockSeq));
-        }
-
         return new self(RamseyUuid::uuid1($node, $clockSeq));
     }
 
@@ -60,15 +48,11 @@ final class Uuid
      * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
      * (which is a UUID) and a name (which is a string).
      *
-     * @param string $ns   The UUID namespace in which to create the named UUID
+     * @param string $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      */
     public static function uuid3(string $ns, string $name): self
     {
-        if (class_exists(RhumsaaUuid::class)) {
-            return new self(RhumsaaUuid::uuid3($ns, $name));
-        }
-
         return new self(RamseyUuid::uuid3($ns, $name));
     }
 
@@ -77,10 +61,6 @@ final class Uuid
      */
     public static function uuid4(): self
     {
-        if (class_exists(RhumsaaUuid::class)) {
-            return new self(RhumsaaUuid::uuid4());
-        }
-
         return new self(RamseyUuid::uuid4());
     }
 
@@ -88,15 +68,11 @@ final class Uuid
      * Generate a version 5 UUID based on the SHA-1 hash of a namespace
      * identifier (which is a UUID) and a name (which is a string).
      *
-     * @param string $ns   The UUID namespace in which to create the named UUID
+     * @param string $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      */
     public static function uuid5(string $ns, string $name): self
     {
-        if (class_exists(RhumsaaUuid::class)) {
-            return new self(RhumsaaUuid::uuid5($ns, $name));
-        }
-
         return new self(RamseyUuid::uuid5($ns, $name));
     }
 

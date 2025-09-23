@@ -22,12 +22,7 @@ class InverseFunctionalIdentifierSpec extends ObjectBehavior
     public function it_can_be_built_with_an_mbox(): void
     {
         $iri = IRI::fromString('mailto:conformancetest@tincanapi.com');
-        $this->beConstructedThrough(
-            static function (IRI $mbox): InverseFunctionalIdentifier {
-                return InverseFunctionalIdentifier::withMbox($mbox);
-            },
-            [$iri]
-        );
+        $this->beConstructedThrough('withMbox', [$iri]);
 
         $this->getMbox()->shouldReturn($iri);
         $this->getMboxSha1Sum()->shouldReturn(null);
@@ -37,12 +32,7 @@ class InverseFunctionalIdentifierSpec extends ObjectBehavior
 
     public function it_can_be_built_with_an_mbox_sha1_sum(): void
     {
-        $this->beConstructedThrough(
-            static function (string $mboxSha1Sum): InverseFunctionalIdentifier {
-                return InverseFunctionalIdentifier::withMboxSha1Sum($mboxSha1Sum);
-            },
-            ['db77b9104b531ecbb0b967f6942549d0ba80fda1']
-        );
+        $this->beConstructedThrough('withMboxSha1Sum', ['db77b9104b531ecbb0b967f6942549d0ba80fda1']);
 
         $this->getMbox()->shouldReturn(null);
         $this->getMboxSha1Sum()->shouldReturn('db77b9104b531ecbb0b967f6942549d0ba80fda1');
@@ -52,12 +42,7 @@ class InverseFunctionalIdentifierSpec extends ObjectBehavior
 
     public function it_can_be_built_with_an_openid(): void
     {
-        $this->beConstructedThrough(
-            static function (string $openId): InverseFunctionalIdentifier {
-                return InverseFunctionalIdentifier::withOpenId($openId);
-            },
-            ['http://openid.tincanapi.com']
-        );
+        $this->beConstructedThrough('withOpenId', ['http://openid.tincanapi.com']);
 
         $this->getMbox()->shouldReturn(null);
         $this->getMboxSha1Sum()->shouldReturn(null);
@@ -68,12 +53,7 @@ class InverseFunctionalIdentifierSpec extends ObjectBehavior
     public function it_can_be_built_with_an_account(): void
     {
         $account = new Account('test', IRL::fromString('https://tincanapi.com'));
-        $this->beConstructedThrough(
-            static function (Account $account): InverseFunctionalIdentifier {
-                return InverseFunctionalIdentifier::withAccount($account);
-            },
-            [$account]
-        );
+        $this->beConstructedThrough('withAccount', [$account]);
 
         $this->getMbox()->shouldReturn(null);
         $this->getMboxSha1Sum()->shouldReturn(null);

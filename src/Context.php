@@ -18,15 +18,23 @@ namespace Xabbuh\XApi\Model;
  */
 final class Context
 {
-    private $registration;
-    private $instructor;
-    private $team;
-    private $contextActivities;
-    private $revision;
-    private $platform;
-    private $language;
-    private $statement;
-    private $extensions;
+    private ?string $registration = null;
+
+    private ?Actor $instructor = null;
+
+    private ?Group $team = null;
+
+    private ?ContextActivities $contextActivities = null;
+
+    private ?string $revision = null;
+
+    private ?string $platform = null;
+
+    private ?string $language = null;
+
+    private ?StatementReference $statement = null;
+
+    private ?Extensions $extensions = null;
 
     public function withRegistration(string $registration): self
     {
@@ -151,19 +159,19 @@ final class Context
             return false;
         }
 
-        if (null !== $this->instructor xor null !== $context->instructor) {
+        if ($this->instructor instanceof Actor xor $context->instructor instanceof Actor) {
             return false;
         }
 
-        if (null !== $this->instructor && null !== $context->instructor && !$this->instructor->equals($context->instructor)) {
+        if ($this->instructor instanceof Actor && $context->instructor instanceof Actor && !$this->instructor->equals($context->instructor)) {
             return false;
         }
 
-        if (null !== $this->team xor null !== $context->team) {
+        if ($this->team instanceof Group xor $context->team instanceof Group) {
             return false;
         }
 
-        if (null !== $this->team && null !== $context->team && !$this->team->equals($context->team)) {
+        if ($this->team instanceof Group && $context->team instanceof Group && !$this->team->equals($context->team)) {
             return false;
         }
 
@@ -183,22 +191,18 @@ final class Context
             return false;
         }
 
-        if (null !== $this->statement xor null !== $context->statement) {
+        if ($this->statement instanceof StatementReference xor $context->statement instanceof StatementReference) {
             return false;
         }
 
-        if (null !== $this->statement && null !== $context->statement && !$this->statement->equals($context->statement)) {
+        if ($this->statement instanceof StatementReference && $context->statement instanceof StatementReference && !$this->statement->equals($context->statement)) {
             return false;
         }
 
-        if (null !== $this->extensions xor null !== $context->extensions) {
+        if ($this->extensions instanceof Extensions xor $context->extensions instanceof Extensions) {
             return false;
         }
 
-        if (null !== $this->extensions && null !== $context->extensions && !$this->extensions->equals($context->extensions)) {
-            return false;
-        }
-
-        return true;
+        return !($this->extensions instanceof Extensions && $context->extensions instanceof Extensions && !$this->extensions->equals($context->extensions));
     }
 }

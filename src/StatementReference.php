@@ -11,6 +11,8 @@
 
 namespace Xabbuh\XApi\Model;
 
+use Override;
+
 /**
  * A reference to an existing {@link Statement}.
  *
@@ -18,11 +20,8 @@ namespace Xabbuh\XApi\Model;
  */
 final class StatementReference extends StatementObject
 {
-    private $statementId;
-
-    public function __construct(StatementId $statementId)
+    public function __construct(private readonly StatementId $statementId)
     {
-        $this->statementId = $statementId;
     }
 
     /**
@@ -36,6 +35,7 @@ final class StatementReference extends StatementObject
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function equals(StatementObject $statementObject): bool
     {
         if (!$statementObject instanceof self) {

@@ -11,17 +11,22 @@
 
 namespace Xabbuh\XApi\Model;
 
+use Stringable;
+
 /**
  * The inverse functional identifier of an {@link Actor}.
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
-final class InverseFunctionalIdentifier
+final class InverseFunctionalIdentifier implements Stringable
 {
-    private $mbox;
-    private $mboxSha1Sum;
-    private $openId;
-    private $account;
+    private ?IRI $mbox = null;
+
+    private ?string $mboxSha1Sum = null;
+
+    private ?string $openId = null;
+
+    private ?Account $account = null;
 
     /**
      * Use one of the with*() factory methods to obtain an InverseFunctionalIdentifier
@@ -103,7 +108,7 @@ final class InverseFunctionalIdentifier
      */
     public function equals(InverseFunctionalIdentifier $iri): bool
     {
-        if (null !== $this->mbox && null !== $iri->mbox && !$this->mbox->equals($iri->mbox)) {
+        if ($this->mbox instanceof IRI && $iri->mbox instanceof IRI && !$this->mbox->equals($iri->mbox)) {
             return false;
         }
 
@@ -115,24 +120,20 @@ final class InverseFunctionalIdentifier
             return false;
         }
 
-        if (null === $this->account && null !== $iri->account) {
+        if (!$this->account instanceof Account && $iri->account instanceof Account) {
             return false;
         }
 
-        if (null !== $this->account && null === $iri->account) {
+        if ($this->account instanceof Account && !$iri->account instanceof Account) {
             return false;
         }
 
-        if (null !== $this->account && !$this->account->equals($iri->account)) {
-            return false;
-        }
-
-        return true;
+        return !($this->account instanceof Account && !$this->account->equals($iri->account));
     }
 
     public function __toString(): string
     {
-        if (null !== $this->mbox) {
+        if ($this->mbox instanceof IRI) {
             return $this->mbox->getValue();
         }
 

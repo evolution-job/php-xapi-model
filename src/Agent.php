@@ -11,6 +11,8 @@
 
 namespace Xabbuh\XApi\Model;
 
+use Override;
+
 /**
  * An individual Agent of an xAPI {@link Statement}.
  *
@@ -18,7 +20,7 @@ namespace Xabbuh\XApi\Model;
  */
 final class Agent extends Actor
 {
-    public function __construct(InverseFunctionalIdentifier $iri, string $name = null)
+    public function __construct(InverseFunctionalIdentifier $iri, ?string $name = null)
     {
         parent::__construct($iri, $name);
     }
@@ -26,8 +28,9 @@ final class Agent extends Actor
     /**
      * {@inheritdoc}
      */
-    public function equals(StatementObject $actor): bool
+    #[Override]
+    public function equals(StatementObject $statementObject): bool
     {
-        return parent::equals($actor);
+        return parent::equals($statementObject);
     }
 }

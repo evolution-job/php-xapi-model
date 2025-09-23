@@ -11,6 +11,7 @@
 
 namespace Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Definition;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
@@ -25,23 +26,19 @@ use Xabbuh\XApi\Model\LanguageMap;
  */
 final class ChoiceInteractionDefinition extends InteractionDefinition
 {
-    private $choices;
-
     /**
-     * @param string[]|null               $correctResponsesPattern
+     * @param string[]|null $correctResponsesPattern
      * @param InteractionComponent[]|null $choices
      */
-    public function __construct(LanguageMap $name = null, LanguageMap $description = null, IRI $type = null, IRL $moreInfo = null, Extensions $extensions = null, array $correctResponsesPattern = null, array $choices = null)
+    public function __construct(?LanguageMap $name = null, ?LanguageMap $description = null, ?IRI $type = null, ?IRL $moreInfo = null, ?Extensions $extensions = null, ?array $correctResponsesPattern = null, private ?array $choices = null)
     {
         parent::__construct($name, $description, $type, $moreInfo, $extensions, $correctResponsesPattern);
-
-        $this->choices = $choices;
     }
 
     /**
      * @param InteractionComponent[]|null $choices
      */
-    public function withChoices(array $choices = null): self
+    public function withChoices(?array $choices = null): self
     {
         $interaction = clone $this;
         $interaction->choices = $choices;
@@ -57,6 +54,7 @@ final class ChoiceInteractionDefinition extends InteractionDefinition
         return $this->choices;
     }
 
+    #[Override]
     public function equals(Definition $definition): bool
     {
         if (!parent::equals($definition)) {

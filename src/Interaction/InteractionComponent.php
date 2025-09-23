@@ -18,15 +18,10 @@ use Xabbuh\XApi\Model\LanguageMap;
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
-final class InteractionComponent
+final readonly class InteractionComponent
 {
-    private $id;
-    private $description;
-
-    public function __construct(string $id, LanguageMap $description = null)
+    public function __construct(private string $id, private ?LanguageMap $description = null)
     {
-        $this->id = $id;
-        $this->description = $description;
     }
 
     public function getId(): string
@@ -45,14 +40,10 @@ final class InteractionComponent
             return false;
         }
 
-        if (null !== $this->description xor null !== $interactionComponent->description) {
+        if ($this->description instanceof LanguageMap xor $interactionComponent->description instanceof LanguageMap) {
             return false;
         }
 
-        if (null !== $this->description && null !== $interactionComponent->description && !$this->description->equals($interactionComponent->description)) {
-            return false;
-        }
-
-        return true;
+        return !($this->description instanceof LanguageMap && $interactionComponent->description instanceof LanguageMap && !$this->description->equals($interactionComponent->description));
     }
 }

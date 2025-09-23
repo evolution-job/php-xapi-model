@@ -18,24 +18,13 @@ namespace Xabbuh\XApi\Model;
  */
 final class State
 {
-    private $activity;
-    private $actor;
-    private $registrationId;
-    private $stateId;
-    private $data;
-
-    public function __construct(Activity $activity, Actor $actor, string $stateId, string $registrationId = null, $data = null)
-    {
-        if (!$actor instanceof Agent) {
-            @trigger_error(sprintf('Passing an instance of "%s" as the second argument is deprecated since 1.2. In 3.0, only instances of "Xabbuh\XApi\Model\Agent" will be accepted.', get_class($actor)), E_USER_DEPRECATED);
-        }
-
-        $this->activity = $activity;
-        $this->actor = $actor;
-        $this->stateId = $stateId;
-        $this->registrationId = $registrationId;
-        $this->data = $data;
-    }
+    public function __construct(
+        private Activity $activity,
+        private ?Agent $agent,
+        private ?string $stateId,
+        private readonly ?string $registrationId = null,
+        private readonly mixed $data = null
+    ) {}
 
     /**
      * Returns the activity.
@@ -46,23 +35,11 @@ final class State
     }
 
     /**
-     * Returns the actor.
-     *
-     * @deprecated since 1.2, to be removed in 3.0
-     */
-    public function getActor(): Actor
-    {
-        @trigger_error(sprintf('The "%s()" method is deprecated since 1.2 and will be removed in 3.0, use "%s::getAgent()" instead.', __METHOD__, self::class), E_USER_DEPRECATED);
-
-        return $this->getAgent();
-    }
-
-    /**
      * Returns the agent.
      */
-    public function getAgent(): Agent
+    public function getAgent(): ?Agent
     {
-        return $this->actor;
+        return $this->agent;
     }
 
     /**
@@ -76,7 +53,7 @@ final class State
     /**
      * Returns the state's id.
      */
-    public function getStateId(): string
+    public function getStateId(): ?string
     {
         return $this->stateId;
     }
@@ -84,8 +61,62 @@ final class State
     /**
      * @return mixed
      */
-    public function getData()
+    public function getData(): mixed
     {
         return $this->data;
+    }
+
+    /**
+     * Checks if another state is equal.
+     *
+     * Two states are equal if and only if all of their properties are equal.
+     */
+    public function equals(State $state): bool
+    {
+        if ($this->stateId !== $state->getStateId()) {
+            return false;
+        }
+
+        if ($this->registrationId !== $state->getRegistrationId()) {
+            return false;
+        }
+
+        if ($this->data !== $state->getData()) {
+            return false;
+        }
+
+        if (false === $this->activity->equals($state->getActivity())) {
+            return false;
+        }
+
+        if (false === $this->agent->equals($state->getAgent())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function withActivity(Activity $activity): self
+    {
+        $state = clone $this;
+        $state->activity = $activity;
+
+        return $state;
+    }
+
+    public function withAgent(Agent $agent): self
+    {
+        $state = clone $this;
+        $state->agent = $agent;
+
+        return $state;
+    }
+
+    public function withStateId(string $stateId): self
+    {
+        $state = clone $this;
+        $state->stateId = $stateId;
+
+        return $state;
     }
 }

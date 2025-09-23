@@ -11,6 +11,7 @@
 
 namespace spec\Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Interaction\InteractionComponent;
 use Xabbuh\XApi\Model\Interaction\InteractionDefinition;
 use Xabbuh\XApi\Model\Interaction\MatchingInteractionDefinition;
@@ -131,6 +132,7 @@ class MatchingInteractionDefinitionSpec extends InteractionDefinitionSpec
         $this->equals($interaction)->shouldReturn(true);
     }
 
+    #[Override]
     protected function createEmptyDefinition(): InteractionDefinition
     {
         return new MatchingInteractionDefinition();

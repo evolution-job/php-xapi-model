@@ -34,22 +34,11 @@ namespace Xabbuh\XApi\Model;
  */
 class Definition
 {
-    private $name;
-    private $description;
-    private $type;
-    private $moreInfo;
-    private $extensions;
-
-    public function __construct(LanguageMap $name = null, LanguageMap $description = null, IRI $type = null, IRL $moreInfo = null, Extensions $extensions = null)
+    public function __construct(private ?LanguageMap $name = null, private ?LanguageMap $description = null, private ?IRI $type = null, private ?IRL $moreInfo = null, private ?Extensions $extensions = null)
     {
-        $this->name = $name;
-        $this->description = $description;
-        $this->type = $type;
-        $this->moreInfo = $moreInfo;
-        $this->extensions = $extensions;
     }
 
-    public function withName(LanguageMap $name = null): self
+    public function withName(?LanguageMap $name = null): self
     {
         $definition = clone $this;
         $definition->name = $name;
@@ -57,7 +46,7 @@ class Definition
         return $definition;
     }
 
-    public function withDescription(LanguageMap $description = null): self
+    public function withDescription(?LanguageMap $description = null): self
     {
         $definition = clone $this;
         $definition->description = $description;
@@ -65,7 +54,7 @@ class Definition
         return $definition;
     }
 
-    public function withType(IRI $type = null): self
+    public function withType(?IRI $type = null): self
     {
         $definition = clone $this;
         $definition->type = $type;
@@ -73,7 +62,7 @@ class Definition
         return $definition;
     }
 
-    public function withMoreInfo(IRL $moreInfo = null): self
+    public function withMoreInfo(?IRL $moreInfo = null): self
     {
         $definition = clone $this;
         $definition->moreInfo = $moreInfo;
@@ -133,39 +122,39 @@ class Definition
      */
     public function equals(Definition $definition): bool
     {
-        if (get_class($this) !== get_class($definition)) {
+        if (static::class !== $definition::class) {
             return false;
         }
 
-        if (null !== $this->type xor null !== $definition->type) {
+        if ($this->type instanceof IRI xor $definition->type instanceof IRI) {
             return false;
         }
 
-        if (null !== $this->type && null !== $definition->type && !$this->type->equals($definition->type)) {
+        if ($this->type instanceof IRI && $definition->type instanceof IRI && !$this->type->equals($definition->type)) {
             return false;
         }
 
-        if (null !== $this->moreInfo xor null !== $definition->moreInfo) {
+        if ($this->moreInfo instanceof IRL xor $definition->moreInfo instanceof IRL) {
             return false;
         }
 
-        if (null !== $this->moreInfo && null !== $definition->moreInfo && !$this->moreInfo->equals($definition->moreInfo)) {
+        if ($this->moreInfo instanceof IRL && $definition->moreInfo instanceof IRL && !$this->moreInfo->equals($definition->moreInfo)) {
             return false;
         }
 
-        if (null !== $this->extensions xor null !== $definition->extensions) {
+        if ($this->extensions instanceof Extensions xor $definition->extensions instanceof Extensions) {
             return false;
         }
 
-        if (null !== $this->name xor null !== $definition->name) {
+        if ($this->name instanceof LanguageMap xor $definition->name instanceof LanguageMap) {
             return false;
         }
 
-        if (null !== $this->description xor null !== $definition->description) {
+        if ($this->description instanceof LanguageMap xor $definition->description instanceof LanguageMap) {
             return false;
         }
 
-        if (null !== $this->name) {
+        if ($this->name instanceof LanguageMap) {
             if (count($this->name) !== count($definition->name)) {
                 return false;
             }
@@ -181,7 +170,7 @@ class Definition
             }
         }
 
-        if (null !== $this->description) {
+        if ($this->description instanceof LanguageMap) {
             if (count($this->description) !== count($definition->description)) {
                 return false;
             }
@@ -197,6 +186,6 @@ class Definition
             }
         }
 
-        return !(null !== $this->extensions && null !== $definition->extensions && !$this->extensions->equals($definition->extensions));
+        return !($this->extensions instanceof Extensions && $definition->extensions instanceof Extensions && !$this->extensions->equals($definition->extensions));
     }
 }

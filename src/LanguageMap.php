@@ -23,7 +23,7 @@ use LogicException;
  */
 final class LanguageMap implements ArrayAccess, Countable
 {
-    private $map;
+    private ?array $map = null;
 
     /**
      * Creates a language map from the given dictionary.

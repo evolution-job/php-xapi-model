@@ -113,7 +113,7 @@ class StatementSpec extends ObjectBehavior
         $object = new Agent(InverseFunctionalIdentifier::withOpenId('http://openid.tincanapi.com'));
         $this->beConstructedWith(StatementId::fromString('39e24cc4-69af-4b01-a824-1fdc6ea8a3af'), $actor, $verb, $object, null, null, new DateTime('2014-07-23T12:34:02-05:00'));
 
-        $otherStatement = new Statement(StatementId::fromString('39e24cc4-69af-4b01-a824-1fdc6ea8a3af'), $actor, $verb, $object,  null, null, new DateTime('2015-07-23T12:34:02-05:00'));
+        $otherStatement = new Statement(StatementId::fromString('39e24cc4-69af-4b01-a824-1fdc6ea8a3af'), $actor, $verb, $object, null, null, new DateTime('2015-07-23T12:34:02-05:00'));
 
         $this->equals($otherStatement)->shouldBe(false);
     }

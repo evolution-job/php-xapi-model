@@ -24,11 +24,8 @@ use ArrayAccess;
  */
 abstract class Document implements ArrayAccess
 {
-    private $data;
-
-    public function __construct(DocumentData $data)
+    public function __construct(private DocumentData $data)
     {
-        $this->data = $data;
     }
 
     /**
@@ -42,7 +39,7 @@ abstract class Document implements ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->data[$offset];
     }

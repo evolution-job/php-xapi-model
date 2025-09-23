@@ -20,7 +20,7 @@ use InvalidArgumentException;
  */
 final class IRL
 {
-    private $value;
+    private ?string $value = null;
 
     private function __construct()
     {

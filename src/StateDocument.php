@@ -18,13 +18,9 @@ namespace Xabbuh\XApi\Model;
  */
 final class StateDocument extends Document
 {
-    private $state;
-
-    public function __construct(State $state, DocumentData $data)
+    public function __construct(private readonly State $state, DocumentData $data)
     {
         parent::__construct($data);
-
-        $this->state = $state;
     }
 
     /**

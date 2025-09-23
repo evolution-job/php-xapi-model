@@ -56,7 +56,10 @@ class DefinitionSpec extends ObjectBehavior
         $this->getName()->shouldBeNull();
 
         $definition->shouldNotBe($this);
-        $definition->shouldBeAnInstanceOf(get_class($this->getWrappedObject()));
+        if (($wrappedObject = $this->getWrappedObject()) !== null) {
+            $definition->shouldBeAnInstanceOf($wrappedObject::class);
+        }
+
         $definition->getName()->shouldReturn($name);
     }
 
@@ -68,7 +71,10 @@ class DefinitionSpec extends ObjectBehavior
         $this->getDescription()->shouldBeNull();
 
         $definition->shouldNotBe($this);
-        $definition->shouldBeAnInstanceOf(get_class($this->getWrappedObject()));
+        if (($wrappedObject = $this->getWrappedObject()) !== null) {
+            $definition->shouldBeAnInstanceOf($wrappedObject::class);
+        }
+
         $definition->getDescription()->shouldReturn($description);
     }
 
@@ -79,7 +85,10 @@ class DefinitionSpec extends ObjectBehavior
         $this->getType()->shouldBeNull();
 
         $definition->shouldNotBe($this);
-        $definition->shouldBeAnInstanceOf(get_class($this->getWrappedObject()));
+        if (($wrappedObject = $this->getWrappedObject()) !== null) {
+            $definition->shouldBeAnInstanceOf($wrappedObject::class);
+        }
+
         $definition->getType()->equals(IRI::fromString('http://id.tincanapi.com/activitytype/unit-test'))->shouldReturn(true);
     }
 
@@ -90,7 +99,10 @@ class DefinitionSpec extends ObjectBehavior
         $this->getMoreInfo()->shouldBeNull();
 
         $definition->shouldNotBe($this);
-        $definition->shouldBeAnInstanceOf(get_class($this->getWrappedObject()));
+        if (($wrappedObject = $this->getWrappedObject()) !== null) {
+            $definition->shouldBeAnInstanceOf($wrappedObject::class);
+        }
+
         $definition->getMoreInfo()->equals(IRL::fromString('https://github.com/adlnet/xAPI_LRS_Test'))->shouldReturn(true);
     }
 
@@ -99,12 +111,16 @@ class DefinitionSpec extends ObjectBehavior
         $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
         $extensions = new Extensions($extensions);
+
         $definition = $this->withExtensions($extensions);
 
         $this->getExtensions()->shouldBeNull();
 
         $definition->shouldNotBe($this);
-        $definition->shouldBeAnInstanceOf(get_class($this->getWrappedObject()));
+        if (($wrappedObject = $this->getWrappedObject()) !== null) {
+            $definition->shouldBeAnInstanceOf($wrappedObject::class);
+        }
+
         $definition->getExtensions()->shouldReturn($extensions);
     }
 
@@ -187,6 +203,7 @@ class DefinitionSpec extends ObjectBehavior
 
         $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
+
         $definition = $this->createEmptyDefinition();
         $definition = $definition->withExtensions(new Extensions($extensions));
 
@@ -201,6 +218,7 @@ class DefinitionSpec extends ObjectBehavior
 
         $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
+
         $definition = $this->createEmptyDefinition();
         $definition = $definition->withExtensions(new Extensions($extensions));
 
@@ -221,6 +239,7 @@ class DefinitionSpec extends ObjectBehavior
 
         $extensions = new SplObjectStorage();
         $extensions->attach(IRI::fromString('http://id.tincanapi.com/extension/topic'), 'Conformance Testing');
+
         $definition = $this->createEmptyDefinition();
         $definition = $definition->withName(LanguageMap::create(['en-US' => 'test']));
         $definition = $definition->withDescription(LanguageMap::create(['en-US' => 'test']));

@@ -20,37 +20,28 @@ use DateTime;
  */
 final class Statement
 {
-    private $id;
-    private $verb;
-    private $actor;
-    private $object;
-    private $result;
-    private $authority;
-    private $created;
-    private $stored;
-    private $context;
-    private $attachments;
-    private $version;
+    private ?array $attachments;
 
     /**
      * @param Attachment[]|null $attachments
      */
-    public function __construct(StatementId $id = null, Actor $actor, Verb $verb, StatementObject $statementObject, Result $result = null, Actor $authority = null, DateTime $created = null, DateTime $stored = null, Context $context = null, array $attachments = null, string $version = null)
-    {
-        $this->id = $id;
-        $this->actor = $actor;
-        $this->verb = $verb;
-        $this->object = $statementObject;
-        $this->result = $result;
-        $this->authority = $authority;
-        $this->created = $created;
-        $this->stored = $stored;
-        $this->context = $context;
+    public function __construct(
+        private ?StatementId $id = null,
+        private ?Actor $actor = null,
+        private ?Verb $verb = null,
+        private ?StatementObject $object = null,
+        private ?Result $result = null,
+        private ?Actor $authority = null,
+        private ?DateTime $created = null,
+        private ?DateTime $stored = null,
+        private ?Context $context = null,
+        ?array $attachments = null,
+        private ?string $version = null
+    ) {
         $this->attachments = null !== $attachments ? array_values($attachments) : null;
-        $this->version = $version;
     }
 
-    public function withId(StatementId $id = null): self
+    public function withId(?StatementId $id = null): self
     {
         $statement = clone $this;
         $statement->id = $id;
@@ -82,7 +73,7 @@ final class Statement
         return $statement;
     }
 
-    public function withResult(Result $result = null): self
+    public function withResult(?Result $result = null): self
     {
         $statement = clone $this;
         $statement->result = $result;
@@ -94,7 +85,7 @@ final class Statement
      * Creates a new Statement based on the current one containing an Authority
      * that asserts the Statement true.
      */
-    public function withAuthority(Actor $authority = null): self
+    public function withAuthority(?Actor $authority = null): self
     {
         $statement = clone $this;
         $statement->authority = $authority;
@@ -102,7 +93,7 @@ final class Statement
         return $statement;
     }
 
-    public function withCreated(DateTime $created = null): self
+    public function withCreated(?DateTime $created = null): self
     {
         $statement = clone $this;
         $statement->created = $created;
@@ -110,7 +101,7 @@ final class Statement
         return $statement;
     }
 
-    public function withStored(DateTime $stored = null): self
+    public function withStored(?DateTime $stored = null): self
     {
         $statement = clone $this;
         $statement->stored = $stored;
@@ -118,7 +109,7 @@ final class Statement
         return $statement;
     }
 
-    public function withContext(Context $context = null): self
+    public function withContext(?Context $context = null): self
     {
         $statement = clone $this;
         $statement->context = $context;
@@ -129,7 +120,7 @@ final class Statement
     /**
      * @param Attachment[]|null $attachments
      */
-    public function withAttachments(array $attachments = null): self
+    public function withAttachments(?array $attachments = null): self
     {
         $statement = clone $this;
         $statement->attachments = null !== $attachments ? array_values($attachments) : null;
@@ -137,7 +128,7 @@ final class Statement
         return $statement;
     }
 
-    public function withVersion(string $version = null): self
+    public function withVersion(?string $version = null): self
     {
         $statement = clone $this;
         $statement->version = $version;
@@ -194,7 +185,7 @@ final class Statement
     }
 
     /**
-     * Returns the timestamp of when the events described in this statement
+     * Returns the DateTime of when the events described in this statement
      * occurred.
      */
     public function getCreated(): ?DateTime
@@ -203,7 +194,7 @@ final class Statement
     }
 
     /**
-     * Returns the timestamp of when this statement was recorded by the LRS.
+     * Returns the DateTime of when this statement was recorded by the LRS.
      */
     public function getStored(): ?DateTime
     {
@@ -268,11 +259,11 @@ final class Statement
      */
     public function equals(Statement $statement): bool
     {
-        if (null !== $this->id xor null !== $statement->id) {
+        if ($this->id instanceof StatementId xor $statement->id instanceof StatementId) {
             return false;
         }
 
-        if (null !== $this->id && null !== $statement->id && !$this->id->equals($statement->id)) {
+        if ($this->id instanceof StatementId && $statement->id instanceof StatementId && !$this->id->equals($statement->id)) {
             return false;
         }
 
@@ -288,27 +279,27 @@ final class Statement
             return false;
         }
 
-        if (null === $this->result && null !== $statement->result) {
+        if (!$this->result instanceof Result && $statement->result instanceof Result) {
             return false;
         }
 
-        if (null !== $this->result && null === $statement->result) {
+        if ($this->result instanceof Result && !$statement->result instanceof Result) {
             return false;
         }
 
-        if (null !== $this->result && !$this->result->equals($statement->result)) {
+        if ($this->result instanceof Result && !$this->result->equals($statement->result)) {
             return false;
         }
 
-        if (null === $this->authority && null !== $statement->authority) {
+        if (!$this->authority instanceof Actor && $statement->authority instanceof Actor) {
             return false;
         }
 
-        if (null !== $this->authority && null === $statement->authority) {
+        if ($this->authority instanceof Actor && !$statement->authority instanceof Actor) {
             return false;
         }
 
-        if (null !== $this->authority && !$this->authority->equals($statement->authority)) {
+        if ($this->authority instanceof Actor && !$this->authority->equals($statement->authority)) {
             return false;
         }
 
@@ -316,11 +307,11 @@ final class Statement
             return false;
         }
 
-        if (null !== $this->context xor null !== $statement->context) {
+        if ($this->context instanceof Context xor $statement->context instanceof Context) {
             return false;
         }
 
-        if (null !== $this->context && null !== $statement->context && !$this->context->equals($statement->context)) {
+        if ($this->context instanceof Context && $statement->context instanceof Context && !$this->context->equals($statement->context)) {
             return false;
         }
 
@@ -333,10 +324,8 @@ final class Statement
                 return false;
             }
 
-            foreach ($this->attachments as $key => $attachment) {
-                if (!$attachment->equals($statement->attachments[$key])) {
-                    return false;
-                }
+            if (array_any($this->attachments, static fn($attachment, $key): bool => !$attachment->equals($statement->attachments[$key]))) {
+                return false;
             }
         }
 

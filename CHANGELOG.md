@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+4.0.0
+-----
+* Minimal support starts with PHP 8.4
+* `Rhumsaa\Uuid\Uuid` could not be used anymore in `Uuid` class.
+* Constructing a `State` object with `Agent` as the second argument is required.
+* The `State::getActor()` method is removed. Use `State::getAgent()` instead.
+* Code Style
+
 3.3.0
 -----
 

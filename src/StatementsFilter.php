@@ -11,6 +11,9 @@
 
 namespace Xabbuh\XApi\Model;
 
+use DateTime;
+use InvalidArgumentException;
+
 /**
  * Filter to apply on GET requests to the statements API.
  *
@@ -18,7 +21,7 @@ namespace Xabbuh\XApi\Model;
  */
 class StatementsFilter
 {
-    private $filter = [];
+    private array $filter = [];
 
     /**
      * Filters by an Agent or an identified Group.
@@ -103,7 +106,7 @@ class StatementsFilter
     /**
      * Filters for Statements stored since the specified timestamp (exclusive).
      */
-    public function since(\DateTime $timestamp): self
+    public function since(DateTime $timestamp): self
     {
         $this->filter['since'] = $timestamp->format('c');
 
@@ -113,7 +116,7 @@ class StatementsFilter
     /**
      * Filters for Statements stored at or before the specified timestamp.
      */
-    public function until(\DateTime $timestamp): self
+    public function until(DateTime $timestamp): self
     {
         $this->filter['until'] = $timestamp->format('c');
 
@@ -124,13 +127,13 @@ class StatementsFilter
      * Sets the maximum number of Statements to return. The server side sets
      * the maximum number of results when this value is not set or when it is 0.
      *
-     * @throws \InvalidArgumentException if the limit is not a non-negative
+     * @throws InvalidArgumentException if the limit is not a non-negative
      *                                   integer
      */
     public function limit(int $limit): self
     {
         if ($limit < 0) {
-            throw new \InvalidArgumentException('Limit must be a non-negative integer');
+            throw new InvalidArgumentException('Limit must be a non-negative integer');
         }
 
         $this->filter['limit'] = $limit;

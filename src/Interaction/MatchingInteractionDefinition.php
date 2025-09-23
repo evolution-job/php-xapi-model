@@ -11,6 +11,7 @@
 
 namespace Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Definition;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
@@ -25,27 +26,20 @@ use Xabbuh\XApi\Model\LanguageMap;
  */
 final class MatchingInteractionDefinition extends InteractionDefinition
 {
-    private $source;
-
-    private $target;
-
     /**
-     * @param string[]|null               $correctResponsesPattern
+     * @param string[]|null $correctResponsesPattern
      * @param InteractionComponent[]|null $source
      * @param InteractionComponent[]|null $target
      */
-    public function __construct(LanguageMap $name = null, LanguageMap $description = null, IRI $type = null, IRL $moreInfo = null, Extensions $extensions = null, array $correctResponsesPattern = null, array $source = null, array $target = null)
+    public function __construct(?LanguageMap $name = null, ?LanguageMap $description = null, ?IRI $type = null, ?IRL $moreInfo = null, ?Extensions $extensions = null, ?array $correctResponsesPattern = null, private ?array $source = null, private ?array $target = null)
     {
         parent::__construct($name, $description, $type, $moreInfo, $extensions, $correctResponsesPattern);
-
-        $this->source = $source;
-        $this->target = $target;
     }
 
     /**
      * @param InteractionComponent[]|null $source
      */
-    public function withSource(array $source = null): self
+    public function withSource(?array $source = null): self
     {
         $interaction = clone $this;
         $interaction->source = $source;
@@ -56,7 +50,7 @@ final class MatchingInteractionDefinition extends InteractionDefinition
     /**
      * @param InteractionComponent[]|null $target
      */
-    public function withTarget(array $target = null): self
+    public function withTarget(?array $target = null): self
     {
         $interaction = clone $this;
         $interaction->target = $target;
@@ -80,6 +74,7 @@ final class MatchingInteractionDefinition extends InteractionDefinition
         return $this->target;
     }
 
+    #[Override]
     public function equals(Definition $definition): bool
     {
         if (!parent::equals($definition)) {

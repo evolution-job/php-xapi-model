@@ -26,11 +26,8 @@ use Xabbuh\XApi\Common\Exception\UnsupportedOperationException;
  */
 final class DocumentData implements ArrayAccess
 {
-    private $data;
-
-    public function __construct(array $data = [])
+    public function __construct(private array $data = [])
     {
-        $this->data = $data;
     }
 
     /**
@@ -44,7 +41,7 @@ final class DocumentData implements ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (!isset($this->data[$offset])) {
             throw new InvalidArgumentException(sprintf('No data for name "%s" registered.', $offset));

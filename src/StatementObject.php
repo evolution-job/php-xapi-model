@@ -25,6 +25,6 @@ abstract class StatementObject
      */
     public function equals(StatementObject $statementObject): bool
     {
-        return get_class($this) === get_class($statementObject);
+        return static::class === $statementObject::class;
     }
 }

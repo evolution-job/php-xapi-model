@@ -18,23 +18,14 @@ namespace Xabbuh\XApi\Model;
  */
 final class ContextActivities
 {
-    private $parentActivities;
-    private $groupingActivities;
-    private $categoryActivities;
-    private $otherActivities;
-
     /**
      * @param Activity[]|null $parentActivities
      * @param Activity[]|null $groupingActivities
      * @param Activity[]|null $categoryActivities
      * @param Activity[]|null $otherActivities
      */
-    public function __construct(array $parentActivities = null, array $groupingActivities = null, array $categoryActivities = null, array $otherActivities = null)
+    public function __construct(private ?array $parentActivities = null, private ?array $groupingActivities = null, private ?array $categoryActivities = null, private ?array $otherActivities = null)
     {
-        $this->parentActivities = $parentActivities;
-        $this->groupingActivities = $groupingActivities;
-        $this->categoryActivities = $categoryActivities;
-        $this->otherActivities = $otherActivities;
     }
 
     public function withAddedParentActivity(Activity $parentActivity): self

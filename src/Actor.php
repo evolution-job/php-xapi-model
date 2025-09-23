@@ -11,6 +11,8 @@
 
 namespace Xabbuh\XApi\Model;
 
+use Override;
+
 /**
  * The Actor of a {@link Statement}.
  *
@@ -18,13 +20,8 @@ namespace Xabbuh\XApi\Model;
  */
 abstract class Actor extends StatementObject
 {
-    private $iri;
-    private $name;
-
-    public function __construct(InverseFunctionalIdentifier $iri = null, string $name = null)
+    public function __construct(private readonly ?InverseFunctionalIdentifier $iri = null, private readonly ?string $name = null)
     {
-        $this->iri = $iri;
-        $this->name = $name;
     }
 
     /**
@@ -48,28 +45,25 @@ abstract class Actor extends StatementObject
      *
      * Two actors are equal if and only if all of their properties are equal.
      */
-    public function equals(StatementObject $actor): bool
+    #[Override]
+    public function equals(StatementObject $statementObject): bool
     {
-        if (!parent::equals($actor)) {
+        if (!parent::equals($statementObject)) {
             return false;
         }
 
-        if (!$actor instanceof Actor) {
+        if (!$statementObject instanceof self) {
             return false;
         }
 
-        if ($this->name !== $actor->name) {
+        if ($this->name !== $statementObject->name) {
             return false;
         }
 
-        if (null !== $this->iri xor null !== $actor->iri) {
+        if ($this->iri instanceof InverseFunctionalIdentifier xor $statementObject->iri instanceof InverseFunctionalIdentifier) {
             return false;
         }
 
-        if (null !== $this->iri && null !== $actor->iri && !$this->iri->equals($actor->iri)) {
-            return false;
-        }
-
-        return true;
+        return !($this->iri instanceof InverseFunctionalIdentifier && $statementObject->iri instanceof InverseFunctionalIdentifier && !$this->iri->equals($statementObject->iri));
     }
 }

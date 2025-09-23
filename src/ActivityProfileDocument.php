@@ -18,13 +18,9 @@ namespace Xabbuh\XApi\Model;
  */
 final class ActivityProfileDocument extends Document
 {
-    private $profile;
-
-    public function __construct(ActivityProfile $profile, DocumentData $data)
+    public function __construct(private readonly ActivityProfile $profile, DocumentData $data)
     {
         parent::__construct($data);
-
-        $this->profile = $profile;
     }
 
     public function getActivityProfile(): ActivityProfile

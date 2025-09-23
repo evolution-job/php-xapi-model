@@ -23,7 +23,7 @@ class StateDocumentsFilter
     /**
      * @var array The generated filter
      */
-    private $filter = [];
+    private array $filter = [];
 
     /**
      * Filter by an Activity.

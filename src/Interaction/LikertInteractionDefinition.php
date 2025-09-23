@@ -11,6 +11,7 @@
 
 namespace Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Definition;
 use Xabbuh\XApi\Model\Extensions;
 use Xabbuh\XApi\Model\IRI;
@@ -25,23 +26,19 @@ use Xabbuh\XApi\Model\LanguageMap;
  */
 final class LikertInteractionDefinition extends InteractionDefinition
 {
-    private $scale;
-
     /**
-     * @param string[]|null               $correctResponsesPattern
+     * @param string[]|null $correctResponsesPattern
      * @param InteractionComponent[]|null $scale
      */
-    public function __construct(LanguageMap $name = null, LanguageMap $description = null, IRI $type = null, IRL $moreInfo = null, Extensions $extensions = null, array $correctResponsesPattern = null, array $scale = null)
+    public function __construct(?LanguageMap $name = null, ?LanguageMap $description = null, ?IRI $type = null, ?IRL $moreInfo = null, ?Extensions $extensions = null, ?array $correctResponsesPattern = null, private ?array $scale = null)
     {
         parent::__construct($name, $description, $type, $moreInfo, $extensions, $correctResponsesPattern);
-
-        $this->scale = $scale;
     }
 
     /**
      * @param InteractionComponent[]|null $scale
      */
-    public function withScale(array $scale = null): self
+    public function withScale(?array $scale = null): self
     {
         $interaction = clone $this;
         $interaction->scale = $scale;
@@ -57,6 +54,7 @@ final class LikertInteractionDefinition extends InteractionDefinition
         return $this->scale;
     }
 
+    #[Override]
     public function equals(Definition $definition): bool
     {
         if (!parent::equals($definition)) {

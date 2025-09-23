@@ -11,6 +11,7 @@
 
 namespace Xabbuh\XApi\Model;
 
+use DateTime;
 use Xabbuh\XApi\Model\Exception\InvalidStateException;
 
 /*
@@ -18,17 +19,26 @@ use Xabbuh\XApi\Model\Exception\InvalidStateException;
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
+
 final class StatementFactory
 {
-    private $id;
-    private $actor;
-    private $verb;
-    private $object;
-    private $result;
-    private $context;
-    private $created;
-    private $stored;
-    private $authority;
+    private ?StatementId $id = null;
+
+    private ?Actor $actor = null;
+
+    private ?Verb $verb = null;
+
+    private ?StatementObject $object = null;
+
+    private ?Result $result = null;
+
+    private ?Context $context = null;
+
+    private ?DateTime $created = null;
+
+    private ?DateTime $stored = null;
+
+    private ?Actor $authority = null;
 
     public function withId(StatementId $id): void
     {
@@ -50,27 +60,27 @@ final class StatementFactory
         $this->object = $object;
     }
 
-    public function withResult(Result $result = null): void
+    public function withResult(?Result $result = null): void
     {
         $this->result = $result;
     }
 
-    public function withContext(Context $context = null): void
+    public function withContext(?Context $context = null): void
     {
         $this->context = $context;
     }
 
-    public function withCreated(\DateTime $created = null): void
+    public function withCreated(?DateTime $created = null): void
     {
         $this->created = $created;
     }
 
-    public function withStored(\DateTime $stored = null): void
+    public function withStored(?DateTime $stored = null): void
     {
         $this->stored = $stored;
     }
 
-    public function withAuthority(Actor $authority = null): void
+    public function withAuthority(?Actor $authority = null): void
     {
         $this->authority = $authority;
     }
@@ -84,15 +94,15 @@ final class StatementFactory
      */
     public function createStatement(): Statement
     {
-        if (null === $this->actor) {
+        if (!$this->actor instanceof Actor) {
             throw new InvalidStateException('A statement actor is missing.');
         }
 
-        if (null === $this->verb) {
+        if (!$this->verb instanceof Verb) {
             throw new InvalidStateException('A statement verb is missing.');
         }
 
-        if (null === $this->object) {
+        if (!$this->object instanceof StatementObject) {
             throw new InvalidStateException('A statement object is missing.');
         }
 

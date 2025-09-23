@@ -12,15 +12,16 @@
 namespace Xabbuh\XApi\Model;
 
 use InvalidArgumentException;
+use Stringable;
 
 /**
  * An internationalized resource identifier according to RFC 3987.
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
  */
-final class IRI
+final class IRI implements Stringable
 {
-    private $value;
+    private ?string $value = null;
 
     private function __construct()
     {
@@ -45,5 +46,10 @@ final class IRI
     public function equals(IRI $iri): bool
     {
         return $this->value === $iri->value;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->value;
     }
 }

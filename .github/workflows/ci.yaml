@@ -13,24 +13,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - php-version: '7.1'
+          - php-version: '8.4'
             composer-options: '--prefer-stable'
-          - php-version: '7.2'
-            composer-options: '--prefer-lowest --prefer-stable'
-          - php-version: '7.3'
-            composer-options: '--prefer-stable'
-          - php-version: '7.4'
-            composer-options: '--prefer-stable'
-          - php-version: '8.0'
-            composer-options: '--prefer-stable'
-          - php-version: '8.1'
-            composer-options: '--prefer-stable'
-          - php-version: '8.2'
-            composer-options: '--prefer-stable'
-          - php-version: '8.3'
-            composer-options: '--prefer-stable'
-          -   php-version: '8.4'
-              composer-options: '--prefer-stable'
 
     steps:
       - name: 'Check out'
@@ -47,7 +31,7 @@ jobs:
         run: 'echo "::set-output name=cache-dir::$(composer config cache-files-dir)"'
 
       - name: 'Cache dependencies'
-        uses: 'actions/cache@v2'
+        uses: 'actions/cache@v4'
         with:
           path: '${{ steps.composer-cache.outputs.cache-dir }}'
           key: "php-${{ matrix.php-version }}-composer-locked-${{ hashFiles('composer.lock') }}"

@@ -18,13 +18,8 @@ namespace Xabbuh\XApi\Model;
  */
 final class Verb
 {
-    private $id;
-    private $display;
-
-    public function __construct(IRI $id, LanguageMap $display = null)
+    public function __construct(private readonly IRI $id, private ?LanguageMap $display = null)
     {
-        $this->id = $id;
-        $this->display = $display;
     }
 
     /**
@@ -54,11 +49,11 @@ final class Verb
             return false;
         }
 
-        if (null === $this->display && null === $verb->display) {
+        if (!$this->display instanceof LanguageMap && !$verb->display instanceof LanguageMap) {
             return true;
         }
 
-        if (null !== $this->display xor null !== $verb->display) {
+        if ($this->display instanceof LanguageMap xor $verb->display instanceof LanguageMap) {
             return false;
         }
 

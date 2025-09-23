@@ -11,6 +11,7 @@
 
 namespace spec\Xabbuh\XApi\Model\Interaction;
 
+use Override;
 use Xabbuh\XApi\Model\Interaction\ChoiceInteractionDefinition;
 use Xabbuh\XApi\Model\Interaction\InteractionComponent;
 use Xabbuh\XApi\Model\Interaction\InteractionDefinition;
@@ -74,6 +75,7 @@ class ChoiceInteractionDefinitionSpec extends InteractionDefinitionSpec
         $this->equals($interaction)->shouldReturn(true);
     }
 
+    #[Override]
     protected function createEmptyDefinition(): InteractionDefinition
     {
         return new ChoiceInteractionDefinition();
