@@ -19,6 +19,9 @@ use Xabbuh\XApi\Model\InverseFunctionalIdentifier;
 use Xabbuh\XApi\Model\IRI;
 use Xabbuh\XApi\Model\State;
 
+/**
+ * @author Mathieu Boldo <mathieu.boldo@entrili.com>
+ */
 class StateFactorySpec extends ObjectBehavior
 {
     public function it_creates_a_state(): void
@@ -30,6 +33,7 @@ class StateFactorySpec extends ObjectBehavior
         $this->withActivity($activity);
         $this->withAgent($agent);
         $this->withStateId($stateId);
+        $this->withContentType('application/json');
 
         $state = $this->createState();
         $state->shouldBeAnInstanceOf(State::class);
@@ -37,6 +41,7 @@ class StateFactorySpec extends ObjectBehavior
         $state->getActivity()->shouldReturn($activity);
         $state->getAgent()->shouldReturn($agent);
         $state->getStateId()->shouldReturn($stateId);
+        $state->getContentType()->shouldReturn('application/json');
     }
 
     public function it_returns_a_new_instance_with_new_activity(): void

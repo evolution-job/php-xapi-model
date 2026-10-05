@@ -18,6 +18,9 @@ use Xabbuh\XApi\Model\InverseFunctionalIdentifier;
 use Xabbuh\XApi\Model\IRI;
 use Xabbuh\XApi\Model\State;
 
+/**
+ * @author Mathieu Boldo <mathieu.boldo@entrili.com>
+ */
 class StateSpec extends ObjectBehavior
 {
     public function let(): void
@@ -56,6 +59,22 @@ class StateSpec extends ObjectBehavior
         $state->shouldNotBe($this);
         $state->shouldBeAnInstanceOf(State::class);
         $state->getStateId()->shouldReturn('bookmark');
+    }
+
+    public function it_returns_a_new_instance_with_content_type(): void
+    {
+        $state = $this->withContentType('text/plain');
+
+        $state->shouldNotBe($this);
+        $state->shouldBeAnInstanceOf(State::class);
+        $state->getContentType()->shouldReturn('text/plain');
+    }
+
+    public function it_is_not_equal_to_a_state_with_a_different_content_type(): void
+    {
+        $state = $this->withContentType('application/json');
+
+        $this->equals($state)->shouldReturn(false);
     }
 
     public function it_is_not_equal_with_other_state_if_activity_differ(): void

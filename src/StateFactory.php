@@ -13,7 +13,7 @@ namespace Xabbuh\XApi\Model;
 
 use Xabbuh\XApi\Model\Exception\InvalidStateException;
 
-/*
+/**
  * State factory eases the creation of complex xAPI states.
  *
  * @author Mathieu Boldo <mathieu.boldo@entrili.com>
@@ -22,6 +22,7 @@ final class StateFactory
 {
     private ?Activity $activity = null;
     private ?Agent $agent = null;
+    private ?string $contentType = null;
     private mixed $data = null;
     private ?string $registrationId = null;
     private ?string $stateId = null;
@@ -39,6 +40,11 @@ final class StateFactory
     public function withData(mixed $data): void
     {
         $this->data = $data;
+    }
+
+    public function withContentType(?string $contentType): void
+    {
+        $this->contentType = $contentType;
     }
 
     public function withRegistrationId(?string $registrationId): void
@@ -73,7 +79,8 @@ final class StateFactory
             $this->agent,
             $this->stateId,
             $this->registrationId,
-            $this->data
+            $this->data,
+            $this->contentType
         );
     }
 }

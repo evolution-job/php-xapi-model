@@ -15,6 +15,7 @@ namespace Xabbuh\XApi\Model;
  * An activity provider's state stored on a remote LRS.
  *
  * @author Christian Flothmann <christian.flothmann@xabbuh.de>
+ * @author Mathieu Boldo <mathieu.boldo@entrili.com>
  */
 final class State
 {
@@ -23,7 +24,8 @@ final class State
         private ?Agent $agent,
         private ?string $stateId,
         private readonly ?string $registrationId = null,
-        private readonly mixed $data = null
+        private readonly mixed $data = null,
+        private readonly ?string $contentType = null
     ) {}
 
     /**
@@ -66,6 +68,11 @@ final class State
         return $this->data;
     }
 
+    public function getContentType(): ?string
+    {
+        return $this->contentType;
+    }
+
     /**
      * Checks if another state is equal.
      *
@@ -82,6 +89,10 @@ final class State
         }
 
         if ($this->data !== $state->getData()) {
+            return false;
+        }
+
+        if ($this->contentType !== $state->getContentType()) {
             return false;
         }
 
@@ -118,5 +129,17 @@ final class State
         $state->stateId = $stateId;
 
         return $state;
+    }
+
+    public function withContentType(?string $contentType): self
+    {
+        return new self(
+            $this->activity,
+            $this->agent,
+            $this->stateId,
+            $this->registrationId,
+            $this->data,
+            $contentType
+        );
     }
 }
