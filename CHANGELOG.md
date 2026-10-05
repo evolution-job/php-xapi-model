@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+4.1.0
+-----
+* Add the ProfileDocument model.
+* Preserve the Content-Type of State documents in the model.
+
 4.0.0
 -----
 * Minimal support starts with PHP 8.4
